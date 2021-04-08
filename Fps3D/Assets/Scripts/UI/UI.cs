@@ -14,7 +14,10 @@ public class UI : MonoBehaviour
         }
     }
 
-    public MainPanel mainPanel;
+    [SerializeField]
+    private MainPanel mainPanel;
+    [SerializeField]
+    private EndGamePanel endGamePanel;
 
     void Awake()
     {
@@ -30,17 +33,40 @@ public class UI : MonoBehaviour
 
     void Start()
     {
-        mainPanel = GetComponentInChildren<MainPanel>();
+        HideCursor();
     }
 
-    public void Aim()
+    public void SetMaxHealth(int health)
     {
-        mainPanel.Aim();
+        mainPanel.SetMaxHealth(health);
     }
 
-    public void Shoot()
+    public void SetHealth(int health)
     {
-        mainPanel.Shoot();
+        mainPanel.SetHealth(health);
+    }
+    
+    public void SetScoreText(int score)
+    {
+        mainPanel.SetScoreText(score);
     }
 
+    public void EndGame(int score)
+    {
+        endGamePanel.gameObject.SetActive(true);
+        endGamePanel.SetScoreText(score);
+        ShowCursor();
+    }
+
+    private void ShowCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void HideCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 }

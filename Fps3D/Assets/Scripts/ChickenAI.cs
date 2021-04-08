@@ -5,14 +5,14 @@ using UnityEngine.AI;
 
 public class ChickenAI : MonoBehaviour
 {
-    private Transform player;
-
     private NavMeshAgent agent;
+
+    private Transform player;
     private List<Transform> navSteps;
     private float detectionDistance = 5;
     private int destinationIndex = 0;
-    private float walkSpeed = 0.5f;
-    private float runSpeed = 3;
+    private float walkSpeed = 1;
+    private float runSpeed = 5;
 
     private Animator animator;
     private bool playerFound = false;
@@ -39,17 +39,19 @@ public class ChickenAI : MonoBehaviour
 
     void Update()
     {
-        SearchPlayer();
-        CheckDestination();
-        if (playerFound && transform.localScale.magnitude < angryScale.magnitude)
+        if (!agent.isStopped)
         {
-            transform.localScale *= 1.05f;
+            SearchPlayer();
+            if (playerFound && transform.localScale.magnitude < angryScale.magnitude)
+            {
+                transform.localScale *= 1.05f;
+            }
+            if (!playerFound && transform.localScale.magnitude > normalScale.magnitude)
+            {
+                transform.localScale *= 0.95f;
+            }
+            CheckDestination();
         }
-        if (!playerFound && transform.localScale.magnitude > normalScale.magnitude)
-        {
-            transform.localScale *= 0.95f;
-        }
-        transform.rotation = Quaternion.LookRotation(agent.destination - transform.position);
     }
 
     public void SearchPlayer()
@@ -92,5 +94,12 @@ public class ChickenAI : MonoBehaviour
             destinationIndex = Random.Range(0, navSteps.Count - 1);
             agent.destination = navSteps[destinationIndex].position;
         }
+    }
+
+    public IEnumerator StopAgent(float time)
+    {
+        agent.isStopped = true;
+        yield return new WaitForSeconds(time);
+        agent.isStopped = false;
     }
 }

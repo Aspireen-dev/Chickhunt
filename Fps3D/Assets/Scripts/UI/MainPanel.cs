@@ -1,23 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainPanel : MonoBehaviour
 {
-    private Crosshair crosshair;
-    
-    void Start()
+    [SerializeField]
+    private HealthBar healthBar;
+    [SerializeField]
+    private Text scoreText;
+
+    public void SetMaxHealth(int health)
     {
-        crosshair = GetComponentInChildren<Crosshair>();
+        healthBar.SetMaxHealth(health);
     }
 
-    public void Aim()
+    public void SetHealth(int health)
     {
-        crosshair.Aim();
+        healthBar.SetHealth(health);
     }
 
-    public void Shoot()
+    public void SetScoreText(int score)
     {
-        crosshair.Shoot();
+        scoreText.text = "Score : " + score.ToString();
     }
 }

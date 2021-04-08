@@ -9,13 +9,15 @@ public class Arrow : MonoBehaviour
     private bool shot = false;
     private bool hasCollided = false;
 
-    private Transform powerUpSpawner;
     private GameObject powerUp = null;
+    private Transform powerUpSpawner;
+    private Transform trail;
 
     void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
         powerUpSpawner = transform.GetChild(0);
+        trail = transform.GetChild(1);
     }
 
     void Update()
@@ -28,33 +30,40 @@ public class Arrow : MonoBehaviour
 
     public void Shoot(float pulledForce)
     {
-        rb.isKinematic = false;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         shot = true;
         GetComponent<BoxCollider>().enabled = true;
+        trail.GetComponent<TrailRenderer>().enabled = true;
+
+        rb.isKinematic = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.AddForce(transform.forward * pulledForce * forceMultiplier);
     }
-    
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (!hasCollided)
+        if (!hasCollided && collision.gameObject.tag != "PowerUp")
         {
             hasCollided = true;
-            if (other.gameObject.tag == "Chicken")
-            {
-                transform.parent = other.gameObject.transform;
-                other.gameObject.GetComponent<Rigidbody>().AddForce(rb.velocity / 2, ForceMode.Impulse);
-            }
+            trail.GetComponent<TrailRenderer>().enabled = false;
             rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
             rb.isKinematic = true;
+            transform.parent = collision.gameObject.transform;
             Destroy(gameObject, 5f);
         }
     }
 
+    public GameObject GetPowerUp()
+    {
+        return powerUp;
+    }
+
     public void SetPowerUp(GameObject newPowerUp)
     {
-        powerUp = newPowerUp;
-        Instantiate(powerUp, powerUpSpawner);
+        if (powerUp != null)
+        {
+            Destroy(powerUp);
+        }
+        powerUp = Instantiate(newPowerUp, powerUpSpawner);
     }
 
 }

@@ -9,6 +9,9 @@ TagManager:
   - Arrow
   - FxTemporaire
   - PowerUp
+  - Fire
+  - Lightning
+  - NavPath
   layers:
   - Default
   - TransparentFX

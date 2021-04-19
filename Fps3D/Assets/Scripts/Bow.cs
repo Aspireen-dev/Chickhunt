@@ -12,8 +12,37 @@ public class Bow : MonoBehaviour
     private SkinnedMeshRenderer bowRend;
 
     private GameObject powerUp = null;
+    private int nbArrows = 10;
 
-    // Start is called before the first frame update
+    // Accessor for the player to update the UI
+    public int NbArrows
+    {
+        get
+        {
+            return nbArrows;
+        }
+    }
+
+    public void AddArrows(int value)
+    {
+        if (value > 0)
+        {
+            nbArrows += value;
+            SpawnArrow();
+        }
+    }
+
+    private bool arrowSlotted = false;
+    
+    // Accessor for the player to know if the player can aim
+    public bool ArrowSlotted
+    {
+        get
+        {
+            return arrowSlotted;
+        }
+    }
+
     void Start()
     {
         bowAnim = GetComponent<Animator>();
@@ -29,6 +58,7 @@ public class Bow : MonoBehaviour
 
     public void Shoot()
     {
+        // If the bow has been bent even a little bit
         if (bowRend.GetBlendShapeWeight(0) > 0.01f)
         {
             bowAnim.SetBool("isAiming", false);
@@ -39,23 +69,30 @@ public class Bow : MonoBehaviour
             arrowInstance.GetComponent<Arrow>().Shoot(pulledForce);
             arrowInstance = null;
 
+            arrowSlotted = false;
+            nbArrows--;
+
             StartCoroutine(ReloadArrow());
         }
     }
 
     IEnumerator ReloadArrow()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         SpawnArrow();
     }
 
     void SpawnArrow()
     {
-        arrowInstance = Instantiate(arrowPrefab, transform);
-        arrowAnim = arrowInstance.GetComponent<Animator>();
-        if (powerUp)
+        if (!arrowInstance && nbArrows > 0)
         {
-            SetPowerUp(powerUp);
+            arrowInstance = Instantiate(arrowPrefab, transform);
+            arrowAnim = arrowInstance.GetComponent<Animator>();
+            if (powerUp)
+            {
+                SetPowerUp(powerUp);
+            }
+            arrowSlotted = true;
         }
     }
 

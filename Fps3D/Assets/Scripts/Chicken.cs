@@ -17,7 +17,6 @@ public class Chicken : MonoBehaviour
 
     private bool isDead = false;
     private bool canBeHit = true;
-    private int effectTime = 3;
     private int health = 100;
     private int value = 200;
     private int strengh = 20;
@@ -68,6 +67,7 @@ public class Chicken : MonoBehaviour
         {
             isDead = true;
             Player.Instance.ChickenKilled(value);
+            ChickenSpawner.Instance.ChickenKilled();
             Destroy(gameObject);
         }
         else
@@ -87,13 +87,16 @@ public class Chicken : MonoBehaviour
 
     private void ActivatePowerUpEffect(GameObject powerUpEffect)
     {
+        int effectTime;
         switch (powerUpEffect.tag)
         {
             case "Fire":
+                effectTime = 5;
                 StartCoroutine(TakeDamageOverTime(10, effectTime));
                 Destroy(powerUpEffect, effectTime);
                 break;
             case "Lightning":
+                effectTime = 3;
                 StartCoroutine(chickenAI.StopAgent(effectTime));
                 iTween.ShakeScale(body, new Vector3(0.5f, 0.5f, 0.5f), effectTime);
                 Destroy(powerUpEffect, effectTime);

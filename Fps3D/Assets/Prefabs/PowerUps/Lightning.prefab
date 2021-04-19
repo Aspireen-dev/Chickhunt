@@ -109,6 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6bf74cdac3f2ab4bb98ddc5e8453eb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sphereRend: {fileID: 4241292350421139000}
+  sphereCol: {fileID: 8404241839345010162}
   powerUp: {fileID: 7058681529397620644, guid: 63a983c948051734bb89fbc56c1ba29e, type: 3}
 --- !u!1001 &886046688061603716
 PrefabInstance:
@@ -176,6 +178,10 @@ PrefabInstance:
     - target: {fileID: 7058681529397620644, guid: 63a983c948051734bb89fbc56c1ba29e, type: 3}
       propertyPath: m_Name
       value: LightningParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7058681529397620644, guid: 63a983c948051734bb89fbc56c1ba29e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63a983c948051734bb89fbc56c1ba29e, type: 3}

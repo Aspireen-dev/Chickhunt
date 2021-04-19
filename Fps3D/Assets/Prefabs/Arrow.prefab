@@ -275,6 +275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a8e5d65ed71e454884e89e913717265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerUpSpawner: {fileID: 509652955054480392}
+  trail: {fileID: 197120898}
 --- !u!65 &81218915207900140
 BoxCollider:
   m_ObjectHideFlags: 0

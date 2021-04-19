@@ -5,12 +5,13 @@ using UnityEngine.AI;
 
 public class ChickenAI : MonoBehaviour
 {
+    public List<Transform> navSteps;
+
     private NavMeshAgent agent;
 
     private Transform player;
-    private List<Transform> navSteps;
-    private float detectionDistance = 5;
-    private int destinationIndex = 0;
+    private int destinationIndex;
+    private float detectionDistance = 10;
     private float walkSpeed = 1;
     private float runSpeed = 5;
 
@@ -20,21 +21,24 @@ public class ChickenAI : MonoBehaviour
     private Vector3 normalScale;
     private Vector3 angryScale;
 
-    void Start()
+    void OnEnable()
     {
         player = Player.Instance.transform;
         normalScale = transform.localScale;
-        angryScale = normalScale * 4;
+        angryScale = normalScale * 3;
 
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
 
-        navSteps = new List<Transform>();
-        foreach (GameObject navStep in GameObject.FindGameObjectsWithTag("NavStep"))
+        if (navSteps != null)
         {
-            navSteps.Add(navStep.transform);
+            destinationIndex = Random.Range(0, navSteps.Count);
+            animator.SetBool("Walk", true);
         }
-        animator.SetBool("Walk", true);
+        else
+        {
+            agent.isStopped = true;
+        }
     }
 
     void Update()
@@ -64,7 +68,6 @@ public class ChickenAI : MonoBehaviour
             {
                 playerFound = true;
                 agent.speed = runSpeed;
-                detectionDistance = 10;
                 animator.SetBool("Walk", false);
                 animator.SetBool("Run", true);
             }
@@ -76,7 +79,6 @@ public class ChickenAI : MonoBehaviour
                 playerFound = false;
                 agent.destination = navSteps[destinationIndex].position;
                 agent.speed = walkSpeed;
-                detectionDistance = 5;
                 animator.SetBool("Run", false);
                 animator.SetBool("Walk", true);
             }
@@ -86,7 +88,7 @@ public class ChickenAI : MonoBehaviour
     public void CheckDestination()
     {
         float dist = agent.remainingDistance;
-        if (dist <= 0.05f)
+        if (dist <= 0.2f)
         {
             Transform lastNavStep = navSteps[destinationIndex];
             navSteps.Remove(lastNavStep);

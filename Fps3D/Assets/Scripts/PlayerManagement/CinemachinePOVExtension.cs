@@ -15,6 +15,8 @@ public class CinemachinePOVExtension : CinemachineExtension
 
     protected override void Awake()
     {
+        // InputManager must be called before this script to be referenced
+        // Go to Edit -> Project Settings -> Script Execution Order, and set a smaller value to InputManager than the one set to this script
         inputManager = InputManager.Instance;
         base.Awake();
     }

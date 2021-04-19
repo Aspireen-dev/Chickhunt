@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +12,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    private GameManager gameManager;
     private InputManager inputManager;
     private Crosshair crosshair;
     private Bow bow;
@@ -23,8 +23,15 @@ public class Player : MonoBehaviour
     private bool enemyFound = false;
     private bool canBeHit = true;
 
-    private int score = 0;
     private int health = 100;
+    private int score = 0;
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+    }
 
     void Awake()
     {
@@ -36,11 +43,11 @@ public class Player : MonoBehaviour
         {
             _instance = this;
         }
-        Application.targetFrameRate = 80;
     }
 
     void Start()
     {
+        gameManager = GameManager.Instance;
         inputManager = InputManager.Instance;
         crosshair = Crosshair.Instance;
         bow = GetComponentInChildren<Bow>();
@@ -49,6 +56,7 @@ public class Player : MonoBehaviour
         ui = UI.Instance;
         ui.SetMaxHealth(health);
         ui.SetScoreText(score);
+        ui.SetNbArrowsText(bow.NbArrows);
     }
 
     void FixedUpdate()
@@ -75,44 +83,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Aim()
-    {
-        isAiming = true;
-        crosshair.Aim();
-        bow.Aim();
-    }
-
-    public void Shoot()
-    {
-        if (isAiming)
-        {
-            isAiming = false;
-            crosshair.Shoot();
-            bow.Shoot();
-            StartCoroutine(PlayerHasShot());
-        }
-    }
-
-    private IEnumerator PlayerHasShot()
-    {
-        inputManager.DisableShoot();
-        yield return new WaitForSeconds(1f);
-        inputManager.EnableShoot();
-    }
-
-    private IEnumerator CanBeHit()
-    {
-        yield return new WaitForSeconds(0.5f);
-        canBeHit = true;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "PowerUp")
         {
-            GameObject powerUp = other.GetComponent<PowerUp>().GetPowerUp();
-            bow.SetPowerUp(powerUp);
-            Destroy(other.gameObject);
+            PowerUp powerUp = other.GetComponent<PowerUp>();
+            bow.SetPowerUp(powerUp.GetPowerUp());
+            StartCoroutine(powerUp.Disable());
+        }
+        if (other.gameObject.tag == "ArrowSpot")
+        {
+            ArrowSpot arrowSpot = other.GetComponent<ArrowSpot>();
+            bow.AddArrows(arrowSpot.GetNbArrows());
+            ui.SetNbArrowsText(bow.NbArrows);
+            StartCoroutine(arrowSpot.Disable());
         }
     }
 
@@ -126,26 +110,68 @@ public class Player : MonoBehaviour
             ui.SetHealth(health);
             if (health > 0)
             {
-                iTween.MoveAdd(gameObject, Vector3.back * 5, 0.5f);
+                Vector3 force = (transform.position - collision.gameObject.transform.position) * 5;
+                force.y = Mathf.Clamp(force.y, 0f, 2f);
+                
+                iTween.MoveAdd(gameObject, force, 0.5f);
                 StartCoroutine(CanBeHit());
             }
             else
             {
-                EndGame();
+                gameManager.EndGame(false);
             }
         }
     }
 
-    private void EndGame()
+    public void Aim()
     {
-        Time.timeScale = 0;
-        ui.EndGame(score);
+        if (bow.ArrowSlotted)
+        {
+            isAiming = true;
+            crosshair.Aim();
+            bow.Aim();
+        }
+    }
+
+    public void Shoot()
+    {
+        if (isAiming)
+        {
+            isAiming = false;
+            crosshair.Shoot();
+            bow.Shoot();
+            StartCoroutine(PlayerHasShot());
+        }
     }
 
     public void ChickenKilled(int points)
     {
         score += points;
         ui.SetScoreText(score);
+        gameManager.currentTimeRemaining += 5;
+    }
+
+    public void SetTimeScore(int seconds)
+    {
+        if (seconds > 0)
+        {
+            score += (seconds * 100);
+        }
+    }
+
+    private IEnumerator PlayerHasShot()
+    {
+        inputManager.DisableShoot();
+        yield return new WaitForSeconds(0.5f);
+        inputManager.EnableShoot();
+
+        ui.SetNbArrowsText(bow.NbArrows);
+    }
+
+    private IEnumerator CanBeHit()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canBeHit = true;
     }
 
 }

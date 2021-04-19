@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    // ----- SINGLETON -----
     private static InputManager _instance;
 
     public static InputManager Instance
@@ -32,6 +33,7 @@ public class InputManager : MonoBehaviour
     {
         playerControls.Enable();
         EnableShoot();
+        playerControls.Player.Pause.started += PauseWithContext;
     }
 
     void OnDisable()
@@ -39,12 +41,14 @@ public class InputManager : MonoBehaviour
         playerControls.Disable();
     }
 
+    // Enable listening of shoot events (mouse click)
     public void EnableShoot()
     {
         playerControls.Player.Shoot.started += AimWithContext;
         playerControls.Player.Shoot.canceled += ShootWithContext;
     }
 
+    // Disable listening of shoots events (mouse click)
     public void DisableShoot()
     {
         playerControls.Player.Shoot.started -= AimWithContext;
@@ -59,6 +63,18 @@ public class InputManager : MonoBehaviour
     private void ShootWithContext(InputAction.CallbackContext context)
     {
         Player.Instance.Shoot();
+    }
+
+    private void PauseWithContext(InputAction.CallbackContext context)
+    {
+        if (GameManager.Instance.isPaused)
+        {
+            GameManager.Instance.UnPause();
+        }
+        else
+        {
+            GameManager.Instance.Pause();
+        }
     }
 
     public Vector2 GetPlayerMovement()

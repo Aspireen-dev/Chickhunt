@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    private Rigidbody rb;
-    private int forceMultiplier = 20;
-    private bool shot = false;
-    private bool hasCollided = false;
+    [SerializeField]
+    private GameObject powerUpSpawner;
+    [SerializeField]
+    private GameObject trail;
 
     private GameObject powerUp = null;
-    private Transform powerUpSpawner;
-    private Transform trail;
+    private Rigidbody rb;
+
+    private int forceMultiplier = 30;
+    private bool hasBeenShot = false;
+    private bool hasCollided = false;
 
     void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
-        powerUpSpawner = transform.GetChild(0);
-        trail = transform.GetChild(1);
     }
 
     void Update()
     {
-        if (shot && rb.velocity.magnitude > Vector3.zero.magnitude)
+        // If the arrow has been shot and is still in movement
+        if (hasBeenShot && rb.velocity.magnitude > Vector3.zero.magnitude)
         {
             transform.rotation = Quaternion.LookRotation(rb.velocity);
         }
@@ -30,7 +32,7 @@ public class Arrow : MonoBehaviour
 
     public void Shoot(float pulledForce)
     {
-        shot = true;
+        hasBeenShot = true;
         GetComponent<BoxCollider>().enabled = true;
         trail.GetComponent<TrailRenderer>().enabled = true;
 
@@ -41,6 +43,7 @@ public class Arrow : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // Limited to one collision
         if (!hasCollided && collision.gameObject.tag != "PowerUp")
         {
             hasCollided = true;
@@ -52,6 +55,7 @@ public class Arrow : MonoBehaviour
         }
     }
 
+    // Used by the enemy to know if there is a power up active on the arrow
     public GameObject GetPowerUp()
     {
         return powerUp;
@@ -59,11 +63,12 @@ public class Arrow : MonoBehaviour
 
     public void SetPowerUp(GameObject newPowerUp)
     {
+        // Destroy the power up active if there is currently one
         if (powerUp != null)
         {
             Destroy(powerUp);
         }
-        powerUp = Instantiate(newPowerUp, powerUpSpawner);
+        powerUp = Instantiate(newPowerUp, powerUpSpawner.transform);
     }
 
 }

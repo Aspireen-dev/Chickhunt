@@ -12,6 +12,7 @@ TagManager:
   - Fire
   - Lightning
   - NavPath
+  - ArrowSpot
   layers:
   - Default
   - TransparentFX

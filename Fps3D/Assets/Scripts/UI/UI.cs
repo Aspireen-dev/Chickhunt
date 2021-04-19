@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
+    // ----- SINGLETON -----
     private static UI _instance;
 
     public static UI Instance
@@ -14,8 +15,11 @@ public class UI : MonoBehaviour
         }
     }
 
+    // ----- PANELS -----
     [SerializeField]
     private MainPanel mainPanel;
+    [SerializeField]
+    private PausePanel pausePanel;
     [SerializeField]
     private EndGamePanel endGamePanel;
 
@@ -24,16 +28,12 @@ public class UI : MonoBehaviour
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
+            return;
         }
         else
         {
             _instance = this;
         }
-    }
-
-    void Start()
-    {
-        HideCursor();
     }
 
     public void SetMaxHealth(int health)
@@ -51,22 +51,29 @@ public class UI : MonoBehaviour
         mainPanel.SetScoreText(score);
     }
 
-    public void EndGame(int score)
+    public void SetTimeRemainingText(int time)
+    {
+        mainPanel.SetTimeRemainingText(time);
+    }
+
+    public void SetNbArrowsText(int nbArrows)
+    {
+        mainPanel.SetNbArrowsText(nbArrows);
+    }
+
+    public void EndGame()
     {
         endGamePanel.gameObject.SetActive(true);
-        endGamePanel.SetScoreText(score);
-        ShowCursor();
+        endGamePanel.SetScoreText(Player.Instance.Score);
     }
 
-    private void ShowCursor()
+    public void Pause()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        pausePanel.gameObject.SetActive(true);
     }
 
-    private void HideCursor()
+    public void UnPause()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        pausePanel.gameObject.SetActive(false);
     }
 }

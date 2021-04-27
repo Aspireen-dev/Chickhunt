@@ -45,11 +45,6 @@ public class UI : MonoBehaviour
     {
         mainPanel.SetHealth(health);
     }
-    
-    public void SetScoreText(int score)
-    {
-        mainPanel.SetScoreText(score);
-    }
 
     public void SetTimeRemainingText(int time)
     {
@@ -59,6 +54,11 @@ public class UI : MonoBehaviour
     public void SetNbArrowsText(int nbArrows)
     {
         mainPanel.SetNbArrowsText(nbArrows);
+    }
+
+    public void SetNbChickenKilled(int nbChickens, int nbChickenToSpawn)
+    {
+        mainPanel.SetNbChickenKilled(nbChickens, nbChickenToSpawn);
     }
 
     public void EndGame()

@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 
     private int health = 100;
     private int score = 0;
+
     public int Score
     {
         get
@@ -55,7 +56,6 @@ public class Player : MonoBehaviour
 
         ui = UI.Instance;
         ui.SetMaxHealth(health);
-        ui.SetScoreText(score);
         ui.SetNbArrowsText(bow.NbArrows);
     }
 
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "PowerUp")
         {
             PowerUp powerUp = other.GetComponent<PowerUp>();
-            bow.SetPowerUp(powerUp.GetPowerUp());
+            bow.SetPowerUp(powerUp.GetPowerUp(), true);
             StartCoroutine(powerUp.Disable());
         }
         if (other.gameObject.tag == "ArrowSpot")
@@ -144,11 +144,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ChickenKilled(int points)
+    public void AddPoints(int points)
     {
         score += points;
-        ui.SetScoreText(score);
-        gameManager.currentTimeRemaining += 5;
     }
 
     public void SetTimeScore(int seconds)

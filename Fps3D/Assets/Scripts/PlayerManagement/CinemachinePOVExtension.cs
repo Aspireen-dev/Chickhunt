@@ -4,9 +4,9 @@ using Cinemachine;
 public class CinemachinePOVExtension : CinemachineExtension
 {
     [SerializeField]
-    private float horizontalSpeed = 10f;
+    private float horizontalSpeed = 5f;
     [SerializeField]
-    private float verticalSpeed = 10f;
+    private float verticalSpeed = 5f;
     [SerializeField]
     private float clampAngle = 80f;
 

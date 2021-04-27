@@ -13,6 +13,7 @@ public class Bow : MonoBehaviour
 
     private GameObject powerUp = null;
     private int nbArrows = 10;
+    private int nbArrowsWithPowerUp = 0;
 
     // Accessor for the player to update the UI
     public int NbArrows
@@ -71,6 +72,10 @@ public class Bow : MonoBehaviour
 
             arrowSlotted = false;
             nbArrows--;
+            if (nbArrowsWithPowerUp > 0)
+            {
+                nbArrowsWithPowerUp--;
+            }
 
             StartCoroutine(ReloadArrow());
         }
@@ -88,7 +93,7 @@ public class Bow : MonoBehaviour
         {
             arrowInstance = Instantiate(arrowPrefab, transform);
             arrowAnim = arrowInstance.GetComponent<Animator>();
-            if (powerUp)
+            if (nbArrowsWithPowerUp > 0 && powerUp)
             {
                 SetPowerUp(powerUp);
             }
@@ -96,8 +101,12 @@ public class Bow : MonoBehaviour
         }
     }
 
-    public void SetPowerUp(GameObject newPowerUp)
+    public void SetPowerUp(GameObject newPowerUp, bool powerUpCollected = false)
     {
+        if (powerUpCollected)
+        {
+            nbArrowsWithPowerUp = 3;
+        }
         powerUp = newPowerUp;
         if (arrowInstance)
         {

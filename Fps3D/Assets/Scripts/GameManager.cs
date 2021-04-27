@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private int timeRemaining = 20;
+    private int timeRemaining;
     [HideInInspector]
     public int currentTimeRemaining;
     [HideInInspector]
@@ -37,18 +37,29 @@ public class GameManager : MonoBehaviour
 #elif UNITY_ANDROID || UNITY_IOS
         Application.targetFramerate = 60;
 #endif
-        SceneManager.sceneLoaded += Reset;
+        SceneManager.sceneLoaded += SceneLoaded;
     }
 
-    private void Reset(Scene scene, LoadSceneMode mode)
+    private void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        isPaused = false;
-        currentTimeRemaining = timeRemaining;
-        Time.timeScale = 1f;
-
-        if (scene.name == "Game")
+        switch (scene.name)
         {
-            StartCoroutine(StartChrono());
+            case "Tutorial":
+                isPaused = true;
+                Time.timeScale = 0f;
+                break;
+            case "Game":
+                isPaused = false;
+                Time.timeScale = 1f;
+                timeRemaining = 60;
+                currentTimeRemaining = timeRemaining;
+                HideCursor();
+                StartCoroutine(StartChrono());
+                break;
+            default:
+                isPaused = false;
+                Time.timeScale = 1f;
+                break;
         }
     }
 

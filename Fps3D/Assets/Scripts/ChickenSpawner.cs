@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ChickenSpawner : MonoBehaviour
 {
@@ -8,8 +9,13 @@ public class ChickenSpawner : MonoBehaviour
     private GameObject chickenPrefab;
     [SerializeField]
     private List<Transform> navPaths;
-    private int nbChickenToSpawn = 20;
+
+    private int nbTotalChicken;
+    private int nbChickenToSpawn;
     private int nbChickenOnField = 0;
+    private int nbChickenKilled = 0;
+
+    private UI ui;
 
     private static ChickenSpawner _instance;
     public static ChickenSpawner Instance
@@ -34,6 +40,20 @@ public class ChickenSpawner : MonoBehaviour
 
     void Start()
     {
+        switch (SceneManager.GetActiveScene().name)
+        {
+            case "Tutorial":
+                nbTotalChicken = 5;
+                break;
+            case "Game":
+                nbTotalChicken = 20;
+                break;
+            default:
+                break;
+        }
+        nbChickenToSpawn = nbTotalChicken;
+        ui = UI.Instance;
+        ui.SetNbChickenKilled(0, nbTotalChicken);
         StartCoroutine(SpawnChickens());
     }
 
@@ -72,10 +92,16 @@ public class ChickenSpawner : MonoBehaviour
     public void ChickenKilled()
     {
         nbChickenOnField--;
+        nbChickenKilled++;
+        ui.SetNbChickenKilled(nbChickenKilled, nbTotalChicken);
         // <= for security
         if (nbChickenToSpawn <= 0 && nbChickenOnField <= 0)
         {
             GameManager.Instance.EndGame(true);
+        }
+        else
+        {
+            GameManager.Instance.ChickenKilled();
         }
     }
 

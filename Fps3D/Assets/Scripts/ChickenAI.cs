@@ -21,6 +21,8 @@ public class ChickenAI : MonoBehaviour
     private Vector3 normalScale;
     private Vector3 angryScale;
 
+    private bool isAttacked = false;
+
     void OnEnable()
     {
         player = Player.Instance.transform;
@@ -45,7 +47,14 @@ public class ChickenAI : MonoBehaviour
     {
         if (!agent.isStopped)
         {
-            SearchPlayer();
+            if (isAttacked)
+            {
+                TargetPlayer();
+            }
+            else
+            {
+                SearchPlayer();
+            }
             if (playerFound && transform.localScale.magnitude < angryScale.magnitude)
             {
                 transform.localScale *= 1.05f;
@@ -63,14 +72,7 @@ public class ChickenAI : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         if (distanceToPlayer <= detectionDistance)
         {
-            agent.destination = player.position;
-            if (!playerFound)
-            {
-                playerFound = true;
-                agent.speed = runSpeed;
-                animator.SetBool("Walk", false);
-                animator.SetBool("Run", true);
-            }
+            TargetPlayer();
         }
         else
         {
@@ -85,7 +87,19 @@ public class ChickenAI : MonoBehaviour
         }
     }
 
-    public void CheckDestination()
+    void TargetPlayer()
+    {
+        agent.destination = player.position;
+        if (!playerFound)
+        {
+            playerFound = true;
+            agent.speed = runSpeed;
+            animator.SetBool("Walk", false);
+            animator.SetBool("Run", true);
+        }
+    }
+
+    void CheckDestination()
     {
         float dist = agent.remainingDistance;
         if (dist <= 0.2f)
@@ -103,5 +117,10 @@ public class ChickenAI : MonoBehaviour
         agent.isStopped = true;
         yield return new WaitForSeconds(time);
         agent.isStopped = false;
+    }
+
+    public void IsAttacked(bool attacked)
+    {
+        isAttacked = attacked;
     }
 }

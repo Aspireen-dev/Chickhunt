@@ -37,6 +37,7 @@ public class Chicken : MonoBehaviour
     {
         if (collision.gameObject.tag == "Arrow" && canBeHit)
         {
+            chickenAI.IsAttacked(true);
             int damage = Mathf.RoundToInt(collision.relativeVelocity.magnitude);
             TakeDamage(damage);
             if (!isDead)

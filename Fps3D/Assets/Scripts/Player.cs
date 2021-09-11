@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     private Crosshair crosshair;
     private Bow bow;
     private Transform cam;
+
+    [SerializeField]
+    private Animator camAnimator;
     private UI ui;
 
     private bool isAiming = false;
@@ -128,6 +131,7 @@ public class Player : MonoBehaviour
         if (bow.ArrowSlotted)
         {
             isAiming = true;
+            camAnimator.SetBool("isAiming", true);
             crosshair.Aim();
             bow.Aim();
         }
@@ -138,6 +142,7 @@ public class Player : MonoBehaviour
         if (isAiming)
         {
             isAiming = false;
+            camAnimator.SetBool("isAiming", false);
             crosshair.Shoot();
             bow.Shoot();
             StartCoroutine(PlayerHasShot());

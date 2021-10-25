@@ -3,12 +3,12 @@ using Cinemachine;
 
 public class CinemachinePOVExtension : CinemachineExtension
 {
+    private float horizontalSpeed = 8f;
+    private float verticalSpeed = 8f;
+    private float clampAngle = 70f;
+
     [SerializeField]
-    private float horizontalSpeed = 5f;
-    [SerializeField]
-    private float verticalSpeed = 5f;
-    [SerializeField]
-    private float clampAngle = 80f;
+    private MainPanel mainPanel;
 
     private InputManager inputManager;
     private Vector3 startingRotation;
@@ -30,7 +30,7 @@ public class CinemachinePOVExtension : CinemachineExtension
                 if (stage == CinemachineCore.Stage.Aim)
                 {
                     if (startingRotation == null) startingRotation = transform.localRotation.eulerAngles;
-                    Vector2 deltaInput = inputManager.GetMouseDelta();
+                    Vector2 deltaInput = mainPanel.GetTouchDelta();
                     startingRotation.x += deltaInput.x * horizontalSpeed * Time.deltaTime;
                     startingRotation.y += deltaInput.y * verticalSpeed * Time.deltaTime;
                     startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);

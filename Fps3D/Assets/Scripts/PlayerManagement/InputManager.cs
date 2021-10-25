@@ -15,6 +15,8 @@ public class InputManager : MonoBehaviour
     }
 
     private PlayerControls playerControls;
+    private Player player;
+    private GameManager gameManager;
 
     void Awake()
     {
@@ -41,6 +43,12 @@ public class InputManager : MonoBehaviour
         playerControls.Disable();
     }
 
+    void Start()
+    {
+        player = Player.Instance;
+        gameManager = GameManager.Instance;
+    }
+
     // Enable listening of shoot events (mouse click)
     public void EnableShoot()
     {
@@ -57,23 +65,23 @@ public class InputManager : MonoBehaviour
 
     private void AimWithContext(InputAction.CallbackContext context)
     {
-        Player.Instance.Aim();
+        player.Aim();
     }
 
     private void ShootWithContext(InputAction.CallbackContext context)
     {
-        Player.Instance.Shoot();
+        player.Shoot();
     }
 
     private void PauseWithContext(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.isPaused)
+        if (gameManager.isPaused)
         {
-            GameManager.Instance.UnPause();
+            gameManager.UnPause();
         }
         else
         {
-            GameManager.Instance.Pause();
+            gameManager.Pause();
         }
     }
 

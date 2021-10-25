@@ -32,11 +32,8 @@ public class GameManager : MonoBehaviour
             _instance = this;
         }
         DontDestroyOnLoad(gameObject);
-#if UNITY_EDITOR || UNITY_STANDALONE
-        Application.targetFrameRate = 80;
-#elif UNITY_ANDROID || UNITY_IOS
-        Application.targetFramerate = 60;
-#endif
+
+        Application.targetFrameRate = 60;
         SceneManager.sceneLoaded += SceneLoaded;
     }
 
@@ -53,7 +50,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1f;
                 timeRemaining = 60;
                 currentTimeRemaining = timeRemaining;
-                HideCursor();
+                //HideCursor();
                 StartCoroutine(StartChrono());
                 break;
             default:
@@ -91,7 +88,7 @@ public class GameManager : MonoBehaviour
 
     public void Pause()
     {
-        ShowCursor();
+        //ShowCursor();
         isPaused = true;
         UI.Instance.Pause();
         InputManager.Instance.DisableShoot();
@@ -100,7 +97,7 @@ public class GameManager : MonoBehaviour
 
     public void UnPause()
     {
-        HideCursor();
+        //HideCursor();
         isPaused = false;
         UI.Instance.UnPause();
         InputManager.Instance.EnableShoot();
@@ -114,12 +111,12 @@ public class GameManager : MonoBehaviour
             Player.Instance.SetTimeScore(currentTimeRemaining);
         }
         StopAllCoroutines();
-        ShowCursor();
+        //ShowCursor();
         UI.Instance.EndGame();
         InputManager.Instance.enabled = false;
         Time.timeScale = 0f;
     }
-
+    /*
     private void ShowCursor()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -131,4 +128,5 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+    */
 }

@@ -46,7 +46,7 @@ public class Chicken : MonoBehaviour
                 if (powerUp)
                 {
                     GameObject powerUpEffect = Instantiate(powerUp, powerUpEffectSpawner);
-                    powerUpEffect.transform.localScale *= 3;
+                    powerUpEffect.transform.localScale *= 5;
                     ActivatePowerUpEffect(powerUpEffect);
                 }
                 canBeHit = false;

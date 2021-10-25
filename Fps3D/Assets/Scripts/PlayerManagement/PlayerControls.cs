@@ -117,6 +117,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""6f533c02-b0ab-42b9-a338-2ee201bc461f"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c61c5e91-1e71-48ab-9a64-65bdb4e0b92d"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -128,8 +139,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""95364be1-7bf3-4af6-a94b-fe86816df6c1"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""0358a81c-267f-4afd-8ddc-3ae63c4a0fc3"",
+                    ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -140,7 +151,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c68fff1b-bec0-4d16-a282-0feb1ce1b7eb"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",

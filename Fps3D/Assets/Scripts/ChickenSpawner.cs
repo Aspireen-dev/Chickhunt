@@ -15,6 +15,7 @@ public class ChickenSpawner : MonoBehaviour
     private int nbChickenOnField = 0;
     private int nbChickenKilled = 0;
 
+    private GameManager gameManager;
     private UI ui;
 
     private static ChickenSpawner _instance;
@@ -52,6 +53,7 @@ public class ChickenSpawner : MonoBehaviour
                 break;
         }
         nbChickenToSpawn = nbTotalChicken;
+        gameManager = GameManager.Instance;
         ui = UI.Instance;
         ui.SetNbChickenKilled(0, nbTotalChicken);
         StartCoroutine(SpawnChickens());
@@ -89,19 +91,16 @@ public class ChickenSpawner : MonoBehaviour
         nbChickenOnField++;
     }
 
-    public void ChickenKilled()
+    public void ChickenKilled(int value)
     {
         nbChickenOnField--;
         nbChickenKilled++;
         ui.SetNbChickenKilled(nbChickenKilled, nbTotalChicken);
         // <= for security
+        gameManager.ChickenKilled(value);
         if (nbChickenToSpawn <= 0 && nbChickenOnField <= 0)
         {
-            GameManager.Instance.EndGame(true);
-        }
-        else
-        {
-            GameManager.Instance.ChickenKilled();
+            gameManager.EndGame(true);
         }
     }
 

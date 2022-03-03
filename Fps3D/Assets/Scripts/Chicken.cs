@@ -67,8 +67,7 @@ public class Chicken : MonoBehaviour
         if (health <= 0)
         {
             isDead = true;
-            Player.Instance.AddPoints(value);
-            ChickenSpawner.Instance.ChickenKilled();
+            ChickenSpawner.Instance.ChickenKilled(value);
             Destroy(gameObject);
         }
         else

@@ -27,15 +27,6 @@ public class Player : MonoBehaviour
     private bool canBeHit = true;
 
     private int health = 100;
-    private int score = 0;
-
-    public int Score
-    {
-        get
-        {
-            return score;
-        }
-    }
 
     void Awake()
     {
@@ -146,19 +137,6 @@ public class Player : MonoBehaviour
             crosshair.Shoot();
             bow.Shoot();
             StartCoroutine(PlayerHasShot());
-        }
-    }
-
-    public void AddPoints(int points)
-    {
-        score += points;
-    }
-
-    public void SetTimeScore(int seconds)
-    {
-        if (seconds > 0)
-        {
-            score += (seconds * 100);
         }
     }
 

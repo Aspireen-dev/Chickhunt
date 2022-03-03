@@ -61,10 +61,10 @@ public class UI : MonoBehaviour
         mainPanel.SetNbChickenKilled(nbChickens, nbChickenToSpawn);
     }
 
-    public void EndGame()
+    public void EndGame(int score, int bestScore)
     {
         endGamePanel.gameObject.SetActive(true);
-        endGamePanel.SetScoreText(Player.Instance.Score);
+        endGamePanel.SetScoreText(score, bestScore);
     }
 
     public void Pause()

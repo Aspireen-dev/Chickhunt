@@ -14,9 +14,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private int score;
     private int timeRemaining;
-    [HideInInspector]
-    public int currentTimeRemaining;
+    private int currentTimeRemaining;
+
     [HideInInspector]
     public bool isPaused = false;
 
@@ -41,14 +42,17 @@ public class GameManager : MonoBehaviour
     {
         switch (scene.name)
         {
+            // TODO
             case "Tutorial":
                 isPaused = true;
                 Time.timeScale = 0f;
+                score = 0;
                 break;
             case "Game":
                 isPaused = false;
                 Time.timeScale = 1f;
                 timeRemaining = 60;
+                score = 0;
                 currentTimeRemaining = timeRemaining;
                 //HideCursor();
                 StartCoroutine(StartChrono());
@@ -71,9 +75,10 @@ public class GameManager : MonoBehaviour
         EndGame(false);
     }
 
-    public void ChickenKilled()
+    public void ChickenKilled(int value)
     {
         currentTimeRemaining += 5;
+        score += value;
     }
 
     public void Play()
@@ -108,14 +113,27 @@ public class GameManager : MonoBehaviour
     {
         if (allChickenKilled)
         {
-            Player.Instance.SetTimeScore(currentTimeRemaining);
+            score += currentTimeRemaining * 100;
         }
+        int bestScore = GetBestScore();
         StopAllCoroutines();
         //ShowCursor();
-        UI.Instance.EndGame();
+        UI.Instance.EndGame(score, bestScore);
         InputManager.Instance.enabled = false;
         Time.timeScale = 0f;
     }
+
+    private int GetBestScore()
+    {
+        int bestScore = PlayerPrefs.GetInt("bestScore", 0);
+        if (bestScore < score)
+        {
+            bestScore = score;
+            PlayerPrefs.SetInt("bestScore", bestScore);
+        }
+        return bestScore;
+    }
+
     /*
     private void ShowCursor()
     {

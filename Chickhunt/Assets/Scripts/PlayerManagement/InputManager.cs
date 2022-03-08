@@ -94,9 +94,4 @@ public class InputManager : MonoBehaviour
     {
         return playerControls.Player.Look.ReadValue<Vector2>();
     }
-
-    public bool PlayerJumpThisFrame()
-    {
-        return playerControls.Player.Jump.triggered;
-    }
 }

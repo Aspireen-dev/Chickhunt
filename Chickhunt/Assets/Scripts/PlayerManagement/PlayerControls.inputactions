@@ -14,14 +14,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "30a691ab-2ac7-4578-8601-60823e699f4f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "Look",
                     "type": "PassThrough",
                     "id": "7cf83afe-c086-428a-aeaf-b72a2e1ac56c",
@@ -115,23 +107,12 @@
                 },
                 {
                     "name": "",
-                    "id": "c61c5e91-1e71-48ab-9a64-65bdb4e0b92d",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
+                    "id": "481fddcc-ada4-48e9-adeb-502250520344",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0358a81c-267f-4afd-8ddc-3ae63c4a0fc3",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -154,6 +135,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6119ba75-798b-4629-98a2-82d471f21822",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0358a81c-267f-4afd-8ddc-3ae63c4a0fc3",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

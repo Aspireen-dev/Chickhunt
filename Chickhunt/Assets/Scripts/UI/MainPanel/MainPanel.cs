@@ -5,6 +5,8 @@ using TMPro;
 public class MainPanel : MonoBehaviour
 {
     [SerializeField]
+    private GameObject phoneUIPanel;
+    [SerializeField]
     private HealthBar healthBar;
     [SerializeField]
     private TextMeshProUGUI timeRemainingText;
@@ -19,9 +21,17 @@ public class MainPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+#if UNITY_ANDROID || UNITY_IOS
+        phoneUIPanel.SetActive(true);
+#endif
         Vector2 topLeftPosition = new Vector2(600, 0);
         Vector2 size = new Vector2(Screen.width - 600, Screen.height);
         touchArea = new Rect(topLeftPosition, size);
+    }
+
+    public void OnPauseBtnClick()
+    {
+        GameManager.Instance.Pause();
     }
 
     public Vector2 GetTouchDelta()

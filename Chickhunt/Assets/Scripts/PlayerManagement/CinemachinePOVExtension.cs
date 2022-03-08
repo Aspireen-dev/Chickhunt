@@ -30,7 +30,13 @@ public class CinemachinePOVExtension : CinemachineExtension
                 if (stage == CinemachineCore.Stage.Aim)
                 {
                     if (startingRotation == null) startingRotation = transform.localRotation.eulerAngles;
-                    Vector2 deltaInput = mainPanel.GetTouchDelta();
+
+                    Vector2 deltaInput;
+#if UNITY_ANDROID || UNITY_IOS
+                    deltaInput = mainPanel.GetTouchDelta();
+#else
+                    deltaInput = inputManager.GetMouseDelta();
+#endif
                     startingRotation.x += deltaInput.x * horizontalSpeed * Time.deltaTime;
                     startingRotation.y += deltaInput.y * verticalSpeed * Time.deltaTime;
                     startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);

@@ -54,7 +54,9 @@ public class GameManager : MonoBehaviour
                 timeRemaining = 60;
                 score = 0;
                 currentTimeRemaining = timeRemaining;
-                //HideCursor();
+#if !(UNITY_ANDROID || UNITY_IOS)
+                HideCursor();
+#endif
                 StartCoroutine(StartChrono());
                 break;
             default:
@@ -93,7 +95,9 @@ public class GameManager : MonoBehaviour
 
     public void Pause()
     {
-        //ShowCursor();
+#if !(UNITY_ANDROID || UNITY_IOS)
+        ShowCursor();
+#endif
         isPaused = true;
         UI.Instance.Pause();
         InputManager.Instance.DisableShoot();
@@ -102,7 +106,9 @@ public class GameManager : MonoBehaviour
 
     public void UnPause()
     {
-        //HideCursor();
+#if !(UNITY_ANDROID || UNITY_IOS)
+        HideCursor();
+#endif
         isPaused = false;
         UI.Instance.UnPause();
         InputManager.Instance.EnableShoot();
@@ -117,7 +123,9 @@ public class GameManager : MonoBehaviour
         }
         int bestScore = GetBestScore();
         StopAllCoroutines();
-        //ShowCursor();
+#if !(UNITY_ANDROID || UNITY_IOS)
+        ShowCursor();
+#endif
         UI.Instance.EndGame(score, bestScore);
         InputManager.Instance.enabled = false;
         Time.timeScale = 0f;
@@ -134,7 +142,6 @@ public class GameManager : MonoBehaviour
         return bestScore;
     }
 
-    /*
     private void ShowCursor()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -146,5 +153,4 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    */
 }

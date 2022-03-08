@@ -4,7 +4,9 @@ using UnityEngine.SceneManagement;
 public class MenuPanel : MonoBehaviour
 {
     [SerializeField]
-    private GameObject controlsPanel;
+    private GameObject phoneControlsPanel;
+    [SerializeField]
+    private GameObject pcControlsPanel;
     [SerializeField]
     private GameObject loadingPanel;
 
@@ -17,7 +19,11 @@ public class MenuPanel : MonoBehaviour
 
     public void OnControlsBtnClick()
     {
-        controlsPanel.SetActive(true);
+#if UNITY_ANDROID || UNITY_IOS
+        phoneControlsPanel.SetActive(true);
+#else
+        pcControlsPanel.SetActive(true);
+#endif
         gameObject.SetActive(false);
     }
 

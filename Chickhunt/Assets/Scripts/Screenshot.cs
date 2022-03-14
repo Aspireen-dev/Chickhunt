@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class Screenshot : MonoBehaviour
 {
     [SerializeField]
@@ -11,6 +9,7 @@ public class Screenshot : MonoBehaviour
 
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         if (filename == "" || filename == null) filename = "image";
         print("Press 'A' key to take a screenshot");
     }
